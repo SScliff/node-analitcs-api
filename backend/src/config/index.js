@@ -17,9 +17,10 @@ const config = {
     },
     security: {
         rateLimit: {
-            windowMs: 60 * 1000, // 1 minute
-            limit: 100
-        }
+            windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 60 * 1000,
+            limit: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100
+        },
+        trustedIps: (process.env.TRUSTED_IPS || '127.0.0.1,::1,::ffff:127.0.0.1,::ffff:172.18.0.1').split(',')
     }
 };
 

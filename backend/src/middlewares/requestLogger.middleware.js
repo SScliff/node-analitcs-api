@@ -14,7 +14,9 @@ const requestLogger = (req, res, next) => {
 
     res.on('finish', () => {
         const duration = Date.now() - start;
-        const route = req.route ? req.route.path : req.path;
+        // Normalize route for metrics compatibility: remove /api/v1 prefix and trailing slash
+        let route = req.route ? (req.baseUrl + req.route.path) : req.path;
+        route = route.replace('/api/v1', '').replace(/\/$/, '') || '/';
         const status = res.statusCode;
 
         // 1. Success Logging (INFO)
