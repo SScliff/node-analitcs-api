@@ -5,6 +5,7 @@ const cors = require('cors');
 const healthRoutes = require('./routes/health.routes');
 const ticketRoutes = require('./routes/ticket.routes');
 const rateLimit = require('./middlewares/rateLimit.middleware');
+const errorHandler = require('./middlewares/error.middleware');
 const { register, metrics } = require('./services/monitoring/metrics.service');
 
 const app = express();
@@ -50,5 +51,8 @@ app.get('/metrics', async (req, res) => {
         res.status(500).end(err);
     }
 });
+
+// --- Error Handling ---
+app.use(errorHandler);
 
 module.exports = app;

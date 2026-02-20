@@ -62,7 +62,13 @@ async function createTicket(ticket) {
             fetchTickets();
         } else {
             const data = await res.json();
-            showToast(data.error || 'Erro ao criar ticket', 'error');
+            if (data.details && Array.isArray(data.details)) {
+                // Se for erro do Zod, mostramos o primeiro erro específico
+                const firstError = data.details[0].message;
+                showToast(firstError, 'error');
+            } else {
+                showToast(data.error || 'Erro ao criar ticket', 'error');
+            }
         }
     } catch (err) {
         showToast('Erro de rede', 'error');
