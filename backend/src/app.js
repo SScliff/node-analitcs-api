@@ -1,11 +1,11 @@
 const express = require('express');
-const logger = require('./services/logger.service');
+const logger = require('./services/monitoring/logger.service');
 const helmet = require('helmet');
 const cors = require('cors');
 const healthRoutes = require('./routes/health.routes');
 const ticketRoutes = require('./routes/ticket.routes');
 const rateLimit = require('./middlewares/rateLimit.middleware');
-const { register, metrics } = require('./services/metrics.service');
+const { register, metrics } = require('./services/monitoring/metrics.service');
 
 const app = express();
 

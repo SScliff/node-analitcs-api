@@ -1,26 +1,13 @@
 const { Pool } = require('pg');
-const { metrics } = require('./metrics.service');
-const logger = require('./logger.service');
+const { metrics } = require('../monitoring/metrics.service');
+const { database: dbConfig } = require('../../config');
+const logger = require('../monitoring/logger.service');
 
 /**
  * Database Service & Connection Pool Study
- * 
- * Objectives:
- * 1. Control the number of maximum connections (max).
- * 2. Monitor connection acquisition time.
- * 3. Study idle connection timeouts.
  */
 
-const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-    max: 10,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
-});
+const pool = new Pool(dbConfig);
 
 // Update gauge when pool events happen
 pool.on('connect', () => {

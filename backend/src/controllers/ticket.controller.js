@@ -1,5 +1,5 @@
-const db = require('../services/db.service');
-const logger = require('../services/logger.service');
+const db = require('../services/db/db.service');
+const logger = require('../services/monitoring/logger.service');
 
 exports.create = async (req, res) => {
     const { title, description, priority } = req.body;
