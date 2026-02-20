@@ -21,6 +21,10 @@ const config = {
             limit: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100
         },
         trustedIps: (process.env.TRUSTED_IPS || '127.0.0.1,::1,::ffff:127.0.0.1,::ffff:172.18.0.1').split(',')
+    },
+    jwt: {
+        secret: process.env.JWT_SECRET || 'dev-secret-change-in-production',
+        expiresIn: process.env.JWT_EXPIRES_IN || '1h'
     }
 };
 
