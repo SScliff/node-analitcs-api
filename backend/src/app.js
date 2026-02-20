@@ -6,36 +6,16 @@ const healthRoutes = require('./routes/health.routes');
 const ticketRoutes = require('./routes/ticket.routes');
 const rateLimit = require('./middlewares/rateLimit.middleware');
 const errorHandler = require('./middlewares/error.middleware');
-const { register, metrics } = require('./services/monitoring/metrics.service');
+const requestLogger = require('./middlewares/requestLogger.middleware');
+const { register } = require('./services/monitoring/metrics.service');
 
 const app = express();
 
-// --- Middlewares ---
+// --- Global Middlewares ---
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-
-// Metrics Middleware
-app.use((req, res, next) => {
-    res.on('finish', () => {
-        const route = req.route ? req.route.path : req.path;
-        const status = res.statusCode.toString();
-
-        // Debug log to see if 429s are hitting this middleware
-        if (status === '429') {
-            logger.warn({ module: 'http', action: 'metrics_collection', route, status }, 'Capturando erro 429');
-        }
-
-        metrics.httpRequestTotal.inc({
-            method: req.method,
-            route: route,
-            status: status
-        });
-    });
-    next();
-});
-
-// Rate limiting (Global)
+app.use(requestLogger);
 app.use(rateLimit);
 
 // --- Routes ---

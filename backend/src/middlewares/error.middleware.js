@@ -1,25 +1,40 @@
 const logger = require('../services/monitoring/logger.service');
+const config = require('../config');
 
 /**
- * Global Error Handling Middleware
- * Centralizes all application errors, ensuring they return a consistent JSON response.
+ * Enhanced Global Error Handling Middleware
  */
 const errorHandler = (err, req, res, next) => {
-    const status = err.status || 500;
-    const message = err.message || 'Erro interno no servidor';
+    err.statusCode = err.statusCode || 500;
 
-    logger.error({
+    const isDevelopment = config.app.env === 'development';
+
+    // Preparation of log payload
+    const logPayload = {
         module: 'app',
-        action: 'global_error_handler',
-        error: message,
-        stack: err.stack,
+        action: 'error_handler',
+        message: err.message,
         url: req.url,
-        method: req.method
-    }, 'Erro não tratado capturado');
+        method: req.method,
+        statusCode: err.statusCode
+    };
 
-    res.status(status).json({
-        error: status === 500 ? 'Erro interno no servidor' : 'Erro na requisição',
-        message: message
+    // Logging Conversation: 
+    // 5xx = ERROR (Server fault)
+    // 4xx = WARN (Client fault)
+    if (err.statusCode >= 500) {
+        logPayload.stack = err.stack;
+        logger.error(logPayload, 'Erro Critico!');
+    } else {
+        logger.warn(logPayload, 'AVISO: Requisição inválida ou erro operacional');
+    }
+
+    // Response to client
+    res.status(err.statusCode).json({
+        error: err.statusCode >= 500 ? 'Erro interno no servidor' : 'Erro na requisição',
+        message: err.message,
+        // Hide details in production for security
+        ...(isDevelopment && { stack: err.stack, details: err.details || [] })
     });
 };
 
