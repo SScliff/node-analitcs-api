@@ -6,13 +6,13 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
-      - PORT=3000
-      - DB_HOST=db
-      - DB_USER=admin
-      - DB_PASSWORD=admin
-      - DB_NAME=node_analytics
-      - DB_PORT=5432
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_PORT=${DB_PORT}
     volumes:
       - ./backend:/app
       - /app/node_modules
@@ -47,7 +47,7 @@ services:
     ports:
       - "3001:3000" # Mapping to 3001 because API is on 3000
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
     depends_on:
       - prometheus
     volumes:
@@ -77,9 +77,9 @@ services:
     image: postgres:15-alpine
     container_name: node_analytics_db
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=node_analytics
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
