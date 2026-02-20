@@ -1,5 +1,4 @@
-// API Base URL (Relative path since it's served by the same proxy or same host in dev)
-const API_BASE = '/api'; // We'll configure Vite proxy to hit the backend
+const API_BASE = '/api/v1'; // Versioned API path
 
 const ticketForm = document.getElementById('ticket-form');
 const ticketList = document.getElementById('ticket-list');

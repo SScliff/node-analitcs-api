@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const ticketController = require('../controllers/ticket.controller');
-const { validate } = require('../middlewares/validate.middleware');
-const { ticketSchema } = require('../schemas/ticket.schema');
+const ticketController = require('../../controllers/ticket.controller');
+const { validate } = require('../../middlewares/validate.middleware');
+const { ticketSchema } = require('../../schemas/ticket.schema');
 
 router.post('/', validate(ticketSchema), ticketController.create);
 router.get('/', ticketController.findAll);
