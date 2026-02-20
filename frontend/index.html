@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Monitor | Analytics Study</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div id="app">
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <span class="icon">🎫</span>
+                    <h1>Ticket<span>Monitor</span></h1>
+                </div>
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <span class="label">Status API:</span>
+                        <span id="api-status" class="status-indicator offline">Checking...</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="container">
+            <section class="ticket-form-section card">
+                <h2>Criar Novo Chamado</h2>
+                <form id="ticket-form">
+                    <div class="form-group">
+                        <label for="title">Título</label>
+                        <input type="text" id="title" placeholder="Ex: Erro no pool de conexões" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Descrição</label>
+                        <textarea id="description" placeholder="Descreva o problema..." rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="priority">Prioridade</label>
+                            <select id="priority">
+                                <option value="Baixa">Baixa</option>
+                                <option value="Média">Média</option>
+                                <option value="Alta">Alta</option>
+                            </select>
+                        </div>
+                        <button type="submit" id="submit-btn" class="btn-primary">Criar Ticket</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="ticket-list-section">
+                <div class="list-header">
+                    <h2>Chamados Ativos</h2>
+                    <div class="actions">
+                        <button id="refresh-btn" class="btn-secondary">Atualizar Lista</button>
+                        <select id="delay-select">
+                            <option value="0">Sem Delay</option>
+                            <option value="1000">1s Delay (Test Pool)</option>
+                            <option value="2000">2s Delay (Test Pool)</option>
+                            <option value="5000">5s Delay (Test Pool)</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="ticket-list" class="ticket-grid">
+                    <!-- Tickets will be rendered here -->
+                    <div class="loading">Carregando chamados...</div>
+                </div>
+            </section>
+        </main>
+
+        <div id="toast-container"></div>
+
+        <!-- Edit Modal -->
+        <div id="edit-modal" class="modal">
+            <div class="modal-content card">
+                <span class="close-modal">&times;</span>
+                <h2>Editar Chamado</h2>
+                <form id="edit-form">
+                    <input type="hidden" id="edit-id">
+                    <div class="form-group">
+                        <label for="edit-title">Título</label>
+                        <input type="text" id="edit-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-description">Descrição</label>
+                        <textarea id="edit-description" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="edit-status">Status</label>
+                            <select id="edit-status">
+                                <option value="Aberto">Aberto</option>
+                                <option value="Em Andamento">Em Andamento</option>
+                                <option value="Fechado">Fechado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-priority">Prioridade</label>
+                            <select id="edit-priority">
+                                <option value="Baixa">Baixa</option>
+                                <option value="Média">Média</option>
+                                <option value="Alta">Alta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Salvar
+                        Alterações</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>
