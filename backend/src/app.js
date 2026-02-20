@@ -6,7 +6,6 @@ const traceMiddleware = require('./middlewares/trace.middleware');
 const rateLimit = require('./middlewares/rateLimit.middleware');
 const errorHandler = require('./middlewares/error.middleware');
 const requestLogger = require('./middlewares/requestLogger.middleware');
-
 const app = express();
 
 // --- Configuration ---
@@ -22,7 +21,6 @@ app.use(rateLimit);
 
 // --- Routes ---
 app.use('/api', routes);
-
 // --- Error Handling ---
 app.use(errorHandler);
 
