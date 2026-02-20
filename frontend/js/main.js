@@ -1,5 +1,7 @@
 const API_BASE = '/api/v1'; // Versioned API path
 
+const token = localStorage.getItem('token');
+
 const ticketForm = document.getElementById('ticket-form');
 const ticketList = document.getElementById('ticket-list');
 const refreshBtn = document.getElementById('refresh-btn');
@@ -27,7 +29,9 @@ async function fetchTickets() {
     const start = Date.now();
 
     try {
-        const res = await fetch(`${API_BASE}/tickets?delay=${delay}`);
+        const res = await fetch(`${API_BASE}/tickets?delay=${delay}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
 
         if (res.status === 429) {
             showToast('Rate Limit Atingido! Aguarde um pouco.', 'error');
@@ -51,7 +55,7 @@ async function createTicket(ticket) {
     try {
         const res = await fetch(`${API_BASE}/tickets`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify(ticket)
         });
 
@@ -62,7 +66,6 @@ async function createTicket(ticket) {
         } else {
             const data = await res.json();
             if (data.details && Array.isArray(data.details)) {
-                // Se for erro do Zod, mostramos o primeiro erro específico
                 const firstError = data.details[0].message;
                 showToast(firstError, 'error');
             } else {
@@ -76,7 +79,7 @@ async function createTicket(ticket) {
 
 async function deleteTicket(id) {
     try {
-        const res = await fetch(`${API_BASE}/tickets/${id}`, { method: 'DELETE' });
+        const res = await fetch(`${API_BASE}/tickets/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
         if (res.ok) {
             showToast('Ticket removido');
             fetchTickets();
@@ -148,7 +151,7 @@ editForm.addEventListener('submit', async (e) => {
     try {
         const res = await fetch(`${API_BASE}/tickets/${id}`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify(updatedData)
         });
 
