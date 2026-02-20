@@ -7,6 +7,7 @@ const ticketList = document.getElementById('ticket-list');
 const refreshBtn = document.getElementById('refresh-btn');
 const apiStatus = document.getElementById('api-status');
 const delaySelect = document.getElementById('delay-select');
+const logoutBtn = document.getElementById('logout-btn');
 
 // --- API Calls ---
 
@@ -193,6 +194,17 @@ ticketForm.addEventListener('submit', (e) => {
 });
 
 refreshBtn.addEventListener('click', fetchTickets);
+
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = 'index.html';
+    });
+}
+
+if (!token) {
+    window.location.href = 'index.html';
+}
 
 // Expose global for onclick
 window.removeTicket = deleteTicket;
